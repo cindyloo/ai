@@ -8,23 +8,23 @@ from torch.utils.data import DataLoader
 cwd = os.path.dirname(__file__)
 
 def create_dataloader(style):
-    ds = load_dataset("databricks/databricks-dolly-15k", split="train")
-    with open(os.path.join(cwd, f"data/{style}.txt"), "r") as f:
-        new_responses = [line.strip().replace("\\n", "\n") for line in f]
+    ds = load_dataset("data/{style}.csv", split="train")
+    #with open(os.path.join(cwd, f"data/{style}.txt"), "r") as f:
+    #    new_responses = [line.strip().replace("\\n", "\n") for line in f]
 
     # Update the entire dataset at once with the new responses
-    ds_ = ds.select(range(len(new_responses)))
-    ds_ = ds_.map(
-        lambda x, idx: {"response_style": new_responses[idx]},
-        with_indices=True,
-        num_proc=1
-    )
+    #ds_ = ds.select(range(len(new_responses)))
+    #ds_ = ds_.map(
+    #    lambda x, idx: {"response_style": new_responses[idx]},
+    #    with_indices=True,
+    #    num_proc=1
+    #)
 
-    n = len(new_responses)
+    n = len(ds)
     ds_test = ds.select(range(n, n+n))
 
     # Create a dataloader
-    dataloader = DataLoader(ds_, batch_size=1, shuffle=True)
+    dataloader = DataLoader(ds_test, batch_size=1, shuffle=True)
     dataloader_test = DataLoader(ds_test, batch_size=1, shuffle=True)
     return dataloader, dataloader_test
 
