@@ -1,0 +1,10 @@
+numpy
+regex
+tqdm
+gym
+openai
+transformers
+datasets
+peft
+lion-pytorch
+torch
